@@ -1,3 +1,8 @@
+<?php
+session_start(); // TAMBAHAN: Mulai session
+// Sertakan file koneksi database di bagian paling atas
+include 'db.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,23 +13,19 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
 
-  <!-- Favicons -->
   <link href="assets/img/logo btcf.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-  <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 </head>
 
@@ -33,8 +34,7 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
+      <a href="index.php" class="logo d-flex align-items-center me-auto">
         <img src="assets/img/logo-btcf.svg" alt="" class="sitelogo">
       </a>
 
@@ -47,18 +47,25 @@
           <li><a href="#team">Team</a></li>
           <li><a href="#activity">Activity</a></li>
           <li><a href="#contact">Contact</a></li>
+          
+          <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
+             <li><a href="admin.php" style="color: #ffc107;">Admin Panel</a></li>
+          <?php endif; ?>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="cta-btn" href="index.html#hero">Get Started</a>
+      <?php if(isset($_SESSION['role'])): ?>
+          <a class="cta-btn" href="logout.php">Logout</a>
+      <?php else: ?>
+          <a class="cta-btn" href="login.php">Login</a>
+      <?php endif; ?>
 
     </div>
   </header>
 
   <main class="main">
 
-    <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
       <img src="assets/img/sawit.jpg" alt="" data-aos="fade-in">
@@ -67,17 +74,12 @@
         <h2 data-aos="fade-up" data-aos-delay="100" class="text-center">True Legacy is Not Built from What We Extract, But from What We Protect</h2>
         <p data-aos="fade-up" data-aos-delay="200" class="text-center">We transform biodiversity conservation into lasting impact through responsible tourism, research, and community empowerment</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-          <a href="#hero" class="btn-get-started">Get Started</a>
-          <a href="https://youtu.be/gRwqy9HKrOE?si=WBUK557eGdpuaGe7@can ('update', Model::class) 
-            
-          @endcan" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+          <a href="#products" class="btn-get-started">View Products</a>
+          <a href="https://youtu.be/gRwqy9HKrOE?si=WBUK557eGdpuaGe7" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
         </div>
       </div>
 
-    </section><!-- /Hero Section -->
-
-    <!-- About Section -->
-    <section id="about" class="about section">
+    </section><section id="about" class="about section">
 
       <div class="container">
 
@@ -87,7 +89,7 @@
             <p><strong>Biodiversity Tourism Center and Fundraising (BTCF)</strong> advances conservation through responsible tourism by protecting biodiversity, empowering communities, and turning high conservation value areas into sustainable destinations. At BTCF, we connect conservation, communities, and responsible tourism to safeguard biodiversity for future generations. Join us in creating measurable impact through research, education, and community-driven conservation</p>
             
             <h4 class="mt-4"><strong>Vision</strong></h4>
-            <p> become a leading institution within Universitas Asa Indonesia, internationally recognized for advocating the utilization of High Conservation Value (HCV) areas in oil palm plantations through the development of responsible biodiversity tourism, supporting conservation, community well-being, and long-term sustainability. </p>
+            <p>To become a leading institution within Universitas Asa Indonesia, internationally recognized for advocating the utilization of High Conservation Value (HCV) areas in oil palm plantations through the development of responsible biodiversity tourism, supporting conservation, community well-being, and long-term sustainability. </p>
             
             <h4 class="mt-4"><strong>Our Mission</strong></h4>
             <ul>
@@ -103,190 +105,68 @@
             <img src="assets/img/logo-btcf.svg" class="img-fluid rounded-4" alt="" style="height: 650px; object-fit: cover;">
           </div>
         </div>
-        </div>
-          </div>
-        </div>
 
       </div>
 
-    </section><!-- /About Section -->
+    </section><section id="products" class="products section">
 
-    <!-- Stats Section -->
-    <section id="stats" class="stats section light-background">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item d-flex align-items-center w-100 h-100">
-              <i class="bi bi-emoji-smile color-blue flex-shrink-0"></i>
-              <div>
-                <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
-                <p>Happy Clients</p>
-              </div>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item d-flex align-items-center w-100 h-100">
-              <i class="bi bi-journal-richtext color-orange flex-shrink-0"></i>
-              <div>
-                <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
-                <p>Projects</p>
-              </div>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item d-flex align-items-center w-100 h-100">
-              <i class="bi bi-headset color-green flex-shrink-0"></i>
-              <div>
-                <span data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1" class="purecounter"></span>
-                <p>Hours Of Support</p>
-              </div>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item d-flex align-items-center w-100 h-100">
-              <i class="bi bi-people color-pink flex-shrink-0"></i>
-              <div>
-                <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
-                <p>Hard Workers</p>
-              </div>
-            </div>
-          </div><!-- End Stats Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Stats Section -->
-
-    <!-- Products Section -->
-    <section id="products" class="products section">
-
-      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>PRODUCTS</h2>
         <p>See Our Products<br></p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      </div><div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row gy-5">
 
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
-            <div class="products-item">
-              <div class="img">
-                <img src="assets/img/services-1.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-activity"></i>
-                </div>
-                <a>
-                  <h3>Training and Workshops</h3>
-                </a>
-                <p>We provide professional capacity-building programs for oil palm sustainability and conservation managers, tourism practitioners, communities, and institutions, covering guiding services, 
-                  destination management, experiential learning, and tourism businesses. The trainings emphasize responsible tourism, sustainability, biodiversity conservation, and service excellence through 
-                  practical, applied learning.</p>
-              </div>
-            </div>
-          </div><!-- End Products Item -->
+          <?php
+          // Mengambil data dari database
+          $sql = "SELECT * FROM products ORDER BY created_at DESC";
+          $result = $conn->query($sql);
+          $count = 0;
 
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
-            <div class="products-item">
-              <div class="img">
-                <img src="assets/img/services-2.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-broadcast"></i>
-                </div>
-                <a>
-                  <h3>Conference and Seminars</h3>
-                </a>
-                <p>We organize knowledge-sharing platforms that bring together academics, 
-                  practitioners, policymakers, and industry stakeholders to discuss emerging issues, 
-                  best practices, and innovations in responsible, sustainable, 
-                  and biodiversity-based tourism at local, national, and international levels..</p>
-              </div>
-            </div>
-          </div><!-- End Products Item -->
+          if ($result && $result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $count++;
+                $hiddenClass = ($count > 3) ? 'more-products' : '';
+                $styleAttr = ($count > 3) ? 'style="display:none;"' : '';
+                
+                $delay = 100 + ($count * 100); 
+                if ($delay > 600) $delay = 200; 
+          ?>
 
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+          <div class="col-xl-4 col-md-6 <?= $hiddenClass ?>" <?= $styleAttr ?> data-aos="zoom-in" data-aos-delay="<?= $delay ?>">
             <div class="products-item">
               <div class="img">
-                <img src="assets/img/services-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/<?= htmlspecialchars($row['prod_img']) ?>" class="img-fluid" alt="<?= htmlspecialchars($row['prod_name']) ?>" style="width:100%; height:250px; object-fit:cover;">
               </div>
               <div class="details position-relative">
                 <div class="icon">
-                  <i class="bi bi-easel"></i>
+                  <i class="bi bi-box-seam"></i> 
                 </div>
-                <a>
-                  <h3>Company empowerment</h3>
+                <a href="#">
+                  <h3><?= htmlspecialchars($row['prod_name']) ?></h3>
                 </a>
-                <p>We develop programs designed to strengthen local community capacity through inclusive participation, skills development, and livelihood enhancement, ensuring that tourism development contributes to social equity, cultural preservation, and environmental stewardship</p>
-              </div>
-            </div>
-          </div><!-- End Products Item -->
+                <p><?= htmlspecialchars($row['prod_desc']) ?></p>
 
-          <div class="col-xl-4 col-md-6 more-products" style="display:none;" data-aos="zoom-in" data-aos-delay="250">
-            <div class="products-item">
-              <div class="img">
-                <img src="assets/img/working-1.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-gear"></i>
+                <div class="mt-3">
+                    <?php if(!empty($row['prod_link'])): ?>
+                        <a href="<?= htmlspecialchars($row['prod_link']) ?>" target="_blank" class="btn btn-primary btn-sm w-100 rounded-pill">
+                            Daftar Sekarang <i class="bi bi-arrow-right"></i>
+                        </a>
+                    <?php else: ?>
+                        <button class="btn btn-secondary btn-sm w-100 rounded-pill" disabled>Info Belum Tersedia</button>
+                    <?php endif; ?>
                 </div>
-                <a>
-                  <h3>Sustainable Biodiversity Tourism Planning</h3>
-                </a>
-                <p>We facilitate technical and advisory services for designing tourism plans that integrate biodiversity conservation, ecosystem protection, and sustainable economic development, including ecotourism, agro-tourism, and tourism in High Conservation Value (HCV) areas.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-4 col-md-6 more-products" style="display:none;" data-aos="zoom-in" data-aos-delay="300">
-            <div class="products-item">
-              <div class="img">
-                <img src="assets/img/working-2.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-tree"></i>
                 </div>
-                <a>
-                  <h3>Research Collaborations</h3>
-                </a>
-                <p>We foster collaborative research initiatives with universities, government agencies, NGOs, and industry partners to generate evidence-based insights, tools, and policies supporting sustainable tourism, biodiversity conservation, and responsible destination development.</p>
-              </div>
             </div>
-          </div>
-
-          <div class="col-xl-4 col-md-6 more-products" style="display:none;" data-aos="zoom-in" data-aos-delay="350">
-            <div class="products-item">
-              <div class="img">
-                <img src="assets/img/working-3.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-leaf"></i>
-                </div>
-                <a>
-                  <h3>Additional Product 3</h3>
-                </a>
-                <p>Additional product description goes here. Short and informative.</p>
-              </div>
-            </div>
-          </div>
+          </div><?php 
+            } 
+          } else {
+              echo '<div class="col-12 text-center"><p>Belum ada produk yang diupload.</p></div>';
+          }
+          ?>
 
         </div>
 
-        <!-- See more / See less button -->
         <div class="text-center mt-4" data-aos="fade-up">
           <button id="products-toggle" class="btn btn-success" data-expanded="false">See more</button>
         </div>
@@ -294,8 +174,7 @@
       </div>
 
     </section>
-
-    <!-- Clients Section -->
+    
     <section id="clients" class="clients section light-background">
 
       <div class="container" data-aos="fade-up">
@@ -304,36 +183,21 @@
 
           <div class="col-xl-2 col-md-3 col-6 client-logo">
             <img src="assets/img/logo-btcf.svg" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
+          </div><div class="col-xl-2 col-md-3 col-6 client-logo">
             <img src="assets/img/logo-btcf.svg" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
+          </div><div class="col-xl-2 col-md-3 col-6 client-logo">
             <img src="assets/img/logo-btcf.svg" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
+          </div><div class="col-xl-2 col-md-3 col-6 client-logo">
             <img src="assets/img/logo-btcf.svg" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
+          </div><div class="col-xl-2 col-md-3 col-6 client-logo">
             <img src="assets/img/logo-btcf.svg" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
+          </div><div class="col-xl-2 col-md-3 col-6 client-logo">
             <img src="assets/img/logo-btcf.svg" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-        </div>
+          </div></div>
 
       </div>
 
-    </section><!-- /Clients Section -->
-   
-    <!-- our SCOPE Section -->
-    <section id="scope" class="scope section">
+    </section><section id="scope" class="scope section">
 
       <div class="container">
 
@@ -382,9 +246,7 @@
               <h4 class="d-none d-lg-block">Fundraising and Resource Mobilization</h4>
             </a>
           </li>
-        </ul><!-- End Tab Nav -->
-
-        <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+        </ul><div class="tab-content" data-aos="fade-up" data-aos-delay="200">
 
           <div class="tab-pane fade active show" id="scope-tab-1">
             <div class="row">
@@ -397,10 +259,10 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/human-resource.png" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-1.jpg" alt="" class="img-fluid">
               </div>
-            </div>
-          </div><!-- End Tab Content Item -->
+            </div>  
+          </div>
 
           <div class="tab-pane fade" id="scope-tab-2">
             <div class="row">
@@ -411,14 +273,13 @@
                 </p>
                 <p class="fst-italic">
                 </p>
-                
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/comunity.jpg" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-2.jpeg" alt="" class="img-fluid">
               </div>
             </div>
-          </div><!-- End Tab Content Item -->
-
+          </div>
+          
           <div class="tab-pane fade" id="scope-tab-3">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
@@ -429,11 +290,11 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/knowledge.jpg" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-3.jpg" alt="" class="img-fluid">
               </div>
             </div>
-          </div><!-- End Tab Content Item -->
-
+          </div>
+          
           <div class="tab-pane fade" id="scope-tab-4">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
@@ -444,11 +305,11 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/dissemination.jpg" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-4.jpg" alt="" class="img-fluid">
               </div>
             </div>
-          </div><!-- End Tab Content Item -->
-
+          </div>
+          
           <div class="tab-pane fade" id="scope-tab-5">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
@@ -459,11 +320,11 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/advocacy.jpg" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-5.jpg" alt="" class="img-fluid">
               </div>
             </div>
-          </div><!-- End Tab Content Item -->
-
+          </div>
+          
           <div class="tab-pane fade" id="scope-tab-6">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
@@ -474,11 +335,11 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/partnership.jpg" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-6.jpg" alt="" class="img-fluid">
               </div>
             </div>
-          </div><!-- End Tab Content Item -->
-
+          </div>
+          
           <div class="tab-pane fade" id="scope-tab-7">
             <div class="row">
               <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
@@ -489,28 +350,19 @@
                 </p>
               </div>
               <div class="col-lg-6 order-1 order-lg-2 text-center">
-                <img src="assets/img/sustain.jpg" alt="" class="img-fluid">
+                <img src="assets/img/scope/scope-7.jpg" alt="" class="img-fluid">
               </div>
             </div>
-          </div><!-- End Tab Content Item -->
-
+          </div>
         </div>
-
       </div>
 
-    </section><!-- /scope Section -->
+    </section><section id="researches" class="researches section light-background">
 
-<!--Researches Section -->
-    <!-- researches 2 Section -->
-    <section id="researches" class="researches section light-background">
-
-      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Researches</h2>
         <p>CHECK OUR RESEARCHES</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
+      </div><div class="container">
 
         <div class="row gy-4">
 
@@ -522,9 +374,7 @@
                 <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
               </div>
             </div>
-          </div><!-- End researches Item -->
-
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+          </div><div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="researches d-flex position-relative h-100">
               <i class="bi bi-card-checklist icon flex-shrink-0"></i>
               <div>
@@ -532,9 +382,7 @@
                 <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
               </div>
             </div>
-          </div><!-- End researches Item -->
-
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+          </div><div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="researches d-flex position-relative h-100">
               <i class="bi bi-bar-chart icon flex-shrink-0"></i>
               <div>
@@ -542,9 +390,7 @@
                 <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
               </div>
             </div>
-          </div><!-- End researches Item -->
-
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+          </div><div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
             <div class="researches d-flex position-relative h-100">
               <i class="bi bi-binoculars icon flex-shrink-0"></i>
               <div>
@@ -552,9 +398,7 @@
                 <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
               </div>
             </div>
-          </div><!-- End researches Item -->
-
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+          </div><div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
             <div class="researches d-flex position-relative h-100">
               <i class="bi bi-brightness-high icon flex-shrink-0"></i>
               <div>
@@ -562,9 +406,7 @@
                 <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
               </div>
             </div>
-          </div><!-- End researches Item -->
-
-          <div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
+          </div><div class="col-md-6" data-aos="fade-up" data-aos-delay="600">
             <div class="researches d-flex position-relative h-100">
               <i class="bi bi-calendar4-week icon flex-shrink-0"></i>
               <div>
@@ -572,23 +414,17 @@
                 <p class="description">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
               </div>
             </div>
-          </div><!-- End researches Item -->
-
-        </div>
+          </div></div>
 
       </div>
 
     
-    <!-- Activity Section -->
     <section id="activity" class="activity section">
 
-      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Activity</h2>
         <p>CHECK OUR ACTIVITY</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
+      </div><div class="container">
 
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
 
@@ -598,9 +434,7 @@
             <li data-filter=".filter-product">Conference and Seminars</li>
             <li data-filter=".filter-branding">Comunity Empowerement</li>
             <li data-filter=".filter-books">Research Collaborations</li>
-          </ul><!-- End Activity Filters -->
-
-          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+          </ul><div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
             <div class="col-lg-4 col-md-6 activity-item isotope-item filter-app">
               <div class="activity-content h-100">
@@ -610,9 +444,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-product">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-product">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -620,9 +452,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-branding">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-branding">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -630,9 +460,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-books">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-books">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -640,9 +468,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-app">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-app">
               <div class="activity -content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -650,9 +476,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-product">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-product">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -660,9 +484,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-branding">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-branding">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -670,9 +492,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-books">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-books">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -680,9 +500,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activityq-item isotope-item filter-app">
+            </div><div class="col-lg-4 col-md-6 activityq-item isotope-item filter-app">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -690,9 +508,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-product">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-product">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -700,9 +516,7 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-branding">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-branding">
               <div class="activity-content h-100">
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
@@ -710,34 +524,24 @@
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-            <div class="col-lg-4 col-md-6 activity-item isotope-item filter-books">
-              <div class="activity-content h-100">
+            </div><div class="col-lg-4 col-md-6 activity-item isotope-item filter-books">
+              <div class="activity-content h-100"> x 
                 <img src="" class="img-fluid" alt="">
                 <div class="activity-info">
                   <a href="" title="Branding 3" data-gallery="activity-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                   <a href="activity-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                 </div>
               </div>
-            </div><!-- End activity Item -->
-
-          </div><!-- End activity Container -->
-
-        </div>
+            </div></div></div>
 
       </div>
 
-    </section><!-- /activity Section -->
+<section id="team" class="team section light-background">
 
-    <!-- Team Section -->
-    <section id="team" class="team section light-background">
-
-      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Team</h2>
         <p>CHECK OUR TEAM</p>
-      </div><!-- End Section Title -->
+      </div>
 
       <div class="container">
 
@@ -745,9 +549,11 @@
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="member">
-              <div class="pic"><img src="assets/img/team/team1.jpg" class="img-fluid" alt=""></div>
+              <div class="pic">
+                <img src="assets/img/team/team-1.png" class="img-fluid" alt="">
+              </div>
               <div class="member-info">
-                <h4>Lenny Yusrini</h4>
+                <h4>Dr. Lenny Yusrini, S.E., M.Si. </h4>
                 <span>Director</span>
                 <div class="social">
                   <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -757,14 +563,15 @@
                 </div>
               </div>
             </div>
-          </div><!-- End Team Member -->
-
+          </div>
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="member">
-              <div class="pic"><img src="assets/img/team/team1.jpg" class="img-fluid" alt=""></div>
+              <div class="pic">
+                <img src="assets/img/team/team-2.png" class="img-fluid" alt="">
+              </div>
               <div class="member-info">
-                <h4>Aqsha Ramadhan Dimas Haryanto</h4>
-                <span>Intern</span>
+                <h4>Nova Eviana, S.S., M.Pd.</h4>
+                <span>Researcher</span>
                 <div class="social">
                   <a href=""><i class="bi bi-twitter-x"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -773,14 +580,15 @@
                 </div>
               </div>
             </div>
-          </div><!-- End Team Member -->
-
+          </div>
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="member">
-              <div class="pic"><img src="assets/img/team/team1.jpg" class="img-fluid" alt=""></div>
+              <div class="pic">
+                <img src="assets/img/team/team-3.png" class="img-fluid" alt="">
+              </div>
               <div class="member-info">
-                <h4>additional member</h4>
-                <span>Position</span>
+                <h4>Roby Darmadi, S.Kom., M.M.</h4>
+                <span>Researcher</span>
                 <div class="social">
                   <a href=""><i class="bi bi-twitter-x"></i></a>
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -789,24 +597,49 @@
                 </div>
               </div>
             </div>
-          </div><!-- End Team Member -->
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="member">
+              <div class="pic">
+                <img src="assets/img/team/team-4.png" class="img-fluid" alt="">
+              </div>
+              <div class="member-info">
+                <h4>Revalino Tobing, S.E., M.Par.</h4>
+                <span>Tour Guiding Specialist</span>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="member">
+              <div class="pic">
+                <img src="assets/img/team/team-5.png" class="img-fluid" alt="">
+              </div>
+              <div class="member-info">
+                <h4>M. Iqbal</h4>
+                <span>IT Support</span>
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+    </section>
+    </section><section id="contact" class="contact section">
 
-        </div>
-
-      </div>
-
-    </section><!-- /Team Section -->
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
-
-      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Contact</h2>
         <p>Reach Us</p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      </div><div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row gy-4">
           <div class="col-lg-6 ">
@@ -818,41 +651,30 @@
                   <h3>Address</h3>
                   <p>Jl. Raya Kalimalang No.2A, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13620</p>
                 </div>
-              </div><!-- End Info Item -->
-
-              <div class="col-md-6">
+              </div><div class="col-md-6">
                 <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
                   <i class="bi bi-telephone"></i>
                   <h3>Call Us</h3>
                   <p>+62-812-9810-3200</p>
                 </div>
-              </div><!-- End Info Item -->
-
-              <div class="col-md-6">
+              </div><div class="col-md-6">
                 <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
                   <i class="bi bi-envelope"></i>
                   <h3>Email Us</h3>
                   <p>btcf@asaindo.ac.id</p>
                 </div>
-              </div><!-- End Info Item -->
-
-            </div>
+              </div></div>
           </div>
 
           <div class="col-lg-6">
             <div class="map-container" data-aos="fade-up" data-aos-delay="500" style="border-radius: 8px; overflow: hidden; box-shadow: 0px 0 25px rgba(0, 0, 0, 0.1); height: 400px;">
-              <!-- Replace the src below with your Google Maps embed link -->
               <iframe src="https://maps.google.com/maps?width=600&height=400&hl=en&q=ASAINDO%20University%20Kampus%20B&t=&z=14&ie=UTF8&iwloc=B&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-          </div><!-- End Map -->
-
-        </div>
+          </div></div>
 
       </div>
 
-    </section><!-- /Contact Section -->
-
-  </main>
+    </section></main>
 
   <footer id="footer" class="footer dark-background">
 
@@ -906,13 +728,10 @@
 
   </footer>
 
-  <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
@@ -922,7 +741,6 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
-  <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
 </body>
